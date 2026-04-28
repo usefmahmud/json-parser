@@ -1,7 +1,8 @@
-enum Token {
+export enum Token {
   Identifier,
   Int,
   String,
+  Newline,
   Assignment,
   IntKeyword,
   StringKeyword,
@@ -27,6 +28,12 @@ export class Lexer {
 
     while (this.position < this.input.length) {
       const currentChar = this.input[this.position];
+
+      if (currentChar === "\n") {
+        tokens.push({ type: Token.Newline, val: "\n" });
+        this.position++;
+        continue;
+      }
 
       if (this.isWhitespace(currentChar)) {
         this.position++;
@@ -79,7 +86,7 @@ export class Lexer {
   }
 
   private isWhitespace(char: string): boolean {
-    return /^\s$/.test(char);
+    return /^[ \t\r]$/.test(char);
   }
 
   private readIdentifier(): string {
