@@ -1,4 +1,4 @@
-enum Token {
+export enum Token {
   LEFT_BRACE,
   RIGHT_BRACE,
   LEFT_BRACKET,
@@ -22,7 +22,7 @@ const Keywords: Record<string, Token> = {
 
 export type TokenValue = {
   type: Token;
-  value?: string;
+  value: string;
 };
 
 export class Lexer {
@@ -94,22 +94,22 @@ export class Lexer {
       const char = this.peek();
 
       if (char === "{") {
-        tokens.push(this.token(Token.LEFT_BRACE));
+        tokens.push(this.token(Token.LEFT_BRACE, "{"));
         this.advance();
       } else if (char === "}") {
-        tokens.push(this.token(Token.RIGHT_BRACE));
+        tokens.push(this.token(Token.RIGHT_BRACE, "}"));
         this.advance();
       } else if (char === "[") {
-        tokens.push(this.token(Token.LEFT_BRACKET));
+        tokens.push(this.token(Token.LEFT_BRACKET, "["));
         this.advance();
       } else if (char === "]") {
-        tokens.push(this.token(Token.RIGHT_BRACKET));
+        tokens.push(this.token(Token.RIGHT_BRACKET, "]"));
         this.advance();
       } else if (char === ":") {
-        tokens.push(this.token(Token.COLON));
+        tokens.push(this.token(Token.COLON, ":"));
         this.advance();
       } else if (char === ",") {
-        tokens.push(this.token(Token.COMMA));
+        tokens.push(this.token(Token.COMMA, ","));
         this.advance();
       } else if (char === '"') {
         tokens.push(this.token(Token.STRING, this.read_string()));
@@ -124,7 +124,9 @@ export class Lexer {
         }
 
         if (this.is_keyword(word)) {
-          tokens.push(this.token(Keywords[word as keyof typeof Keywords]));
+          tokens.push(
+            this.token(Keywords[word as keyof typeof Keywords], word),
+          );
         } else {
           throw new Error(`Unexpected Token: ${word}`);
         }
@@ -136,7 +138,7 @@ export class Lexer {
     return tokens;
   }
 
-  private token(type: Token, value?: string): TokenValue {
+  private token(type: Token, value: string): TokenValue {
     return { type, value };
   }
 }
