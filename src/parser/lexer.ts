@@ -142,11 +142,3 @@ export class Lexer {
     return { type, value };
   }
 }
-
-const input =
-  '{"name": "yousef", "age": 21, "isActive": true, "skills": ["skill1", "skill2"]}';
-const lexer = new Lexer(input);
-const tokens = lexer.tokenize();
-console.log(
-  tokens.map((token) => ({ type: Token[token.type], value: token.value })),
-);
