@@ -1,5 +1,5 @@
-import { AST, ASTNode, ObjectNode } from "./ast";
-import { Token, TokenValue } from "./lexer";
+import type { AST, ObjectNode } from './ast';
+import { Token, type TokenValue } from './lexer';
 
 export class Parser {
   private position = 0;
@@ -33,7 +33,7 @@ export class Parser {
     const result = this.parse_value();
 
     if (!this.is_at_end()) {
-      throw new Error("Unexpected trailing tokens");
+      throw new Error('Unexpected trailing tokens');
     }
 
     return result;
@@ -44,35 +44,35 @@ export class Parser {
 
     if (token.type === Token.STRING) {
       const t = this.consume(Token.STRING);
-      return this.token("String", t.value!);
+      return this.token('String', t.value!);
     } else if (token.type === Token.NUMBER) {
       const t = this.consume(Token.NUMBER);
-      return this.token("Number", Number(t.value));
+      return this.token('Number', Number(t.value));
     } else if (token.type === Token.TRUE) {
       this.consume(Token.TRUE);
-      return this.token("Boolean", true);
+      return this.token('Boolean', true);
     } else if (token.type === Token.FALSE) {
       this.consume(Token.FALSE);
-      return this.token("Boolean", false);
+      return this.token('Boolean', false);
     } else if (token.type === Token.NULL) {
       this.consume(Token.NULL);
-      return this.token("Null", null);
+      return this.token('Null', null);
     } else if (token.type === Token.LEFT_BRACE) {
       return this.parse_object();
     } else if (token.type === Token.LEFT_BRACKET) {
       return this.parse_array();
     } else {
-      throw new Error("Unexpected Token Type");
+      throw new Error('Unexpected Token Type');
     }
   }
 
   private parse_object(): AST {
     this.consume(Token.LEFT_BRACE);
-    const object: ObjectNode["value"] = {};
+    const object: ObjectNode['value'] = {};
 
     if (this.peek().type === Token.RIGHT_BRACE) {
       this.consume(Token.RIGHT_BRACE);
-      return this.token("Object", {});
+      return this.token('Object', {});
     }
 
     while (this.peek().type !== Token.RIGHT_BRACE) {
@@ -91,7 +91,7 @@ export class Parser {
 
     this.consume(Token.RIGHT_BRACE);
 
-    return this.token("Object", object);
+    return this.token('Object', object);
   }
 
   private parse_array(): AST {
@@ -101,7 +101,7 @@ export class Parser {
 
     if (this.peek().type === Token.RIGHT_BRACKET) {
       this.consume(Token.RIGHT_BRACKET);
-      return this.token("Array", array);
+      return this.token('Array', array);
     }
 
     while (this.peek().type !== Token.RIGHT_BRACKET) {
@@ -116,12 +116,12 @@ export class Parser {
 
     this.consume(Token.RIGHT_BRACKET);
 
-    return this.token("Array", array);
+    return this.token('Array', array);
   }
 
-  private token<T extends AST["type"]>(
+  private token<T extends AST['type']>(
     type: T,
-    value: Extract<AST, { type: T }>["value"],
+    value: Extract<AST, { type: T }>['value']
   ): Extract<AST, { type: T }> {
     return { type, value } as Extract<AST, { type: T }>;
   }

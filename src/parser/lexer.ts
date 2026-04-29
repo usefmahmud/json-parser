@@ -64,7 +64,7 @@ export class Lexer {
   }
 
   private read_string(): string {
-    let result = "";
+    let result = '';
     this.advance();
 
     while (!this.is_at_end() && this.peek() !== '"') {
@@ -77,7 +77,7 @@ export class Lexer {
   }
 
   private read_number(): string {
-    let result = "";
+    let result = '';
     while (!this.is_at_end() && this.is_digit(this.peek())) {
       result += this.peek();
       this.advance();
@@ -93,30 +93,30 @@ export class Lexer {
 
       const char = this.peek();
 
-      if (char === "{") {
-        tokens.push(this.token(Token.LEFT_BRACE, "{"));
+      if (char === '{') {
+        tokens.push(this.token(Token.LEFT_BRACE, '{'));
         this.advance();
-      } else if (char === "}") {
-        tokens.push(this.token(Token.RIGHT_BRACE, "}"));
+      } else if (char === '}') {
+        tokens.push(this.token(Token.RIGHT_BRACE, '}'));
         this.advance();
-      } else if (char === "[") {
-        tokens.push(this.token(Token.LEFT_BRACKET, "["));
+      } else if (char === '[') {
+        tokens.push(this.token(Token.LEFT_BRACKET, '['));
         this.advance();
-      } else if (char === "]") {
-        tokens.push(this.token(Token.RIGHT_BRACKET, "]"));
+      } else if (char === ']') {
+        tokens.push(this.token(Token.RIGHT_BRACKET, ']'));
         this.advance();
-      } else if (char === ":") {
-        tokens.push(this.token(Token.COLON, ":"));
+      } else if (char === ':') {
+        tokens.push(this.token(Token.COLON, ':'));
         this.advance();
-      } else if (char === ",") {
-        tokens.push(this.token(Token.COMMA, ","));
+      } else if (char === ',') {
+        tokens.push(this.token(Token.COMMA, ','));
         this.advance();
       } else if (char === '"') {
         tokens.push(this.token(Token.STRING, this.read_string()));
       } else if (this.is_digit(char)) {
         tokens.push(this.token(Token.NUMBER, this.read_number()));
       } else if (this.is_alpha(char)) {
-        let word = "";
+        let word = '';
 
         while (!this.is_at_end() && this.is_alpha(this.peek())) {
           word += this.peek();
@@ -125,7 +125,7 @@ export class Lexer {
 
         if (this.is_keyword(word)) {
           tokens.push(
-            this.token(Keywords[word as keyof typeof Keywords], word),
+            this.token(Keywords[word as keyof typeof Keywords], word)
           );
         } else {
           throw new Error(`Unexpected Token: ${word}`);
