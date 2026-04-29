@@ -50,7 +50,7 @@ export class Parser {
     } else if (token.type === Token.LEFT_BRACE) {
       return this.parse_object();
     } else if (token.type === Token.LEFT_BRACKET) {
-      // parse array
+      return this.parse_array();
     } else {
       throw new Error("Unexpected Token Type");
     }
@@ -82,6 +82,31 @@ export class Parser {
     this.consume(Token.RIGHT_BRACE);
 
     return this.token("Object", object);
+  }
+
+  private parse_array(): AST {
+    this.consume(Token.LEFT_BRACKET);
+
+    const array: AST[] = [];
+
+    if (this.peek().type === Token.RIGHT_BRACKET) {
+      this.consume(Token.RIGHT_BRACKET);
+      return this.token("Array", array);
+    }
+
+    while (this.peek().type !== Token.RIGHT_BRACKET) {
+      const value = this.parse_value();
+
+      array.push(value);
+
+      if (this.peek().type === Token.COMMA) {
+        this.consume(Token.COMMA);
+      }
+    }
+
+    this.consume(Token.RIGHT_BRACKET);
+
+    return this.token("Array", array);
   }
 
   private token<T extends AST["type"]>(
