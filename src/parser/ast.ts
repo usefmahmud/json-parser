@@ -1,6 +1,6 @@
-type NodeType = "String" | "Object" | "Array" | "Number" | "Boolean" | "Null";
+export type NodeType = "String" | "Object" | "Array" | "Number" | "Boolean" | "Null";
 
-interface ASTNode<T extends NodeType> {
+export interface ASTNode<T extends NodeType> {
   type: T;
 }
 
