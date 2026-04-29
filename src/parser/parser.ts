@@ -29,6 +29,16 @@ export class Parser {
     return this.position >= this.tokens.length;
   }
 
+  public parse(): AST {
+    const result = this.parse_value();
+
+    if (!this.is_at_end()) {
+      throw new Error("Unexpected trailing tokens");
+    }
+
+    return result;
+  }
+
   private parse_value(): AST {
     const token = this.peek();
 
