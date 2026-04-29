@@ -8,11 +8,11 @@ interface StringNode extends ASTNode<"String"> {
   value: string;
 }
 
-interface ObjectNode extends ASTNode<"Object"> {
+export interface ObjectNode extends ASTNode<"Object"> {
   value: Record<string, AST>;
 }
 
-interface ArrayNode extends ASTNode<"Array"> {
+export interface ArrayNode extends ASTNode<"Array"> {
   value: AST[];
 }
 

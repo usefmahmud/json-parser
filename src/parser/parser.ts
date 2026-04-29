@@ -1,4 +1,4 @@
-import { AST } from "./ast";
+import { AST, ASTNode, ObjectNode } from "./ast";
 import { Token, TokenValue } from "./lexer";
 
 export class Parser {
@@ -48,12 +48,40 @@ export class Parser {
       this.consume(Token.NULL);
       return this.token("Null", null);
     } else if (token.type === Token.LEFT_BRACE) {
-      // parse object
+      return this.parse_object();
     } else if (token.type === Token.LEFT_BRACKET) {
       // parse array
     } else {
       throw new Error("Unexpected Token Type");
     }
+  }
+
+  private parse_object(): AST {
+    this.consume(Token.LEFT_BRACE);
+    const object: ObjectNode["value"] = {};
+
+    if (this.peek().type === Token.RIGHT_BRACE) {
+      this.consume(Token.RIGHT_BRACE);
+      return this.token("Object", {});
+    }
+
+    while (this.peek().type !== Token.RIGHT_BRACE) {
+      const keyToken = this.consume(Token.STRING);
+
+      this.consume(Token.COLON);
+
+      const value = this.parse_value();
+
+      object[keyToken.value] = value;
+
+      if (this.peek().type === Token.COMMA) {
+        this.consume(Token.COMMA);
+      }
+    }
+
+    this.consume(Token.RIGHT_BRACE);
+
+    return this.token("Object", object);
   }
 
   private token<T extends AST["type"]>(
