@@ -1,5 +1,6 @@
 import '@xyflow/react/dist/style.css';
 import { useEffect, useState } from 'react';
+import ASTTree from './components/features/ast-tree';
 import ASTVisualizer from './components/features/ast-visualizer';
 import { JsonEditor } from './components/features/json-editor';
 import {
@@ -51,15 +52,11 @@ function App() {
                   </TabsList>
                 </div>
 
-                <TabsContent
-                  value='tree'
-                  className='flex-1 overflow-hidden'
-                ></TabsContent>
+                <TabsContent value='tree' className='flex-1 overflow-hidden'>
+                  <ASTTree ast={ast} />
+                </TabsContent>
 
-                <TabsContent
-                  value='graph'
-                  className='flex-1 overflow-hidden'
-                >
+                <TabsContent value='graph' className='flex-1 overflow-hidden'>
                   {/* the visualizer component is fully ai generated (عشان فلاح جرافس xD) */}
                   <ASTVisualizer ast={ast} />
                 </TabsContent>
