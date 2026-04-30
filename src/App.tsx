@@ -1,3 +1,4 @@
+import { JsonEditor } from './components/features/json-editor';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -16,7 +17,9 @@ function App() {
 
         <div className='flex-1 overflow-hidden'>
           <ResizablePanelGroup orientation='horizontal'>
-            <ResizablePanel defaultSize={50} minSize={30}></ResizablePanel>
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <JsonEditor />
+            </ResizablePanel>
 
             <ResizableHandle />
 
